@@ -31,8 +31,14 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     const name = req.query.name;
     var condition = name ? { name: { [Op.like]: `%${name}%` } } : null;
+    var pageIndex = (req.query.pageIndex || 1) - 1;
+    var pageSize = req.query.pageSize || 10;
 
-    User.findAll({ where: condition })
+    User.findAndCountAll({
+        where: condition,
+        limit: pageSize,
+        offset: pageIndex * pageSize,
+    })
         .then(data => {
             res.send(data);
         })

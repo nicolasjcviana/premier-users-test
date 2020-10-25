@@ -1,8 +1,13 @@
 import http from '../http-common';
 
 class UserService {
-    getAll() {
-        return http.get("/users");
+    getAll(pageIndex, pageSize) {
+        return http.get("/users", {
+            params: {
+                pageIndex,
+                pageSize
+            }
+        });
     }
 
     get(id) {
